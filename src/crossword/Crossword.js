@@ -10,6 +10,7 @@ import PropTypes from "prop-types"
 
 import produce from "immer"
 import styled, { ThemeContext, ThemeProvider } from "styled-components"
+import { toKatakana, isKatakana } from "wanakana"
 
 import Cell from "./Cell"
 import DirectionClues from "./DirectionClues"
@@ -63,16 +64,19 @@ const GridWrapper = styled.div.attrs((props) => ({
 }))`
   /* position: relative; */
   min-width: 20rem;
-  max-width: 60rem; /* Should the size matter? */
+  max-width: 40rem; /* Should the size matter? */
   width: auto;
   flex: 2 1 50%;
+  height: 427px;
+  overflow: hidden;
 `
 
 const CluesWrapper = styled.div.attrs((props) => ({
   className: "clues",
 }))`
-  padding: 0 1em;
-  flex: 1 2 25%;
+  padding: 0;
+  padding-left: 2em;
+  flex: 1;
 
   @media (max-width: ${(props) => props.theme.columnBreakpoint}) {
     margin-top: 2em;
@@ -122,6 +126,7 @@ const Crossword = React.forwardRef(
     const [bulkChange, setBulkChange] = useState(null)
     const [checkQueue, setCheckQueue] = useState([])
     const [crosswordCorrect, setCrosswordCorrect] = useState(false)
+    const [currentMora, setCurrentMora] = useState("")
 
     const inputRef = useRef()
 
@@ -332,14 +337,29 @@ const Crossword = React.forwardRef(
       moveRelative(across ? 0 : -1, across ? -1 : 0)
     }, [currentDirection, moveRelative])
 
-    // keyboard handling
-    const handleSingleCharacter = useCallback(
-      (char) => {
-        setCellCharacter(focusedRow, focusedCol, char.toUpperCase())
+    useEffect(() => {
+      if (currentMora.length === 0) {
+        return
+      }
+      let kana = currentMora.toUpperCase()
+      if (kana !== "N") {
+        kana = toKatakana(kana)
+      }
+      if (kana === "ンン") {
+        kana = "ン"
+      }
+      const isKana = isKatakana(kana)
+      if (isKana) {
+        setCellCharacter(focusedRow, focusedCol, kana)
         moveForward()
-      },
-      [focusedRow, focusedCol, setCellCharacter, moveForward],
-    )
+        setCurrentMora("")
+      }
+    }, [currentMora, focusedRow, focusedCol, setCellCharacter, moveForward])
+
+    // keyboard handling
+    const handleSingleCharacter = useCallback((char) => {
+      setCurrentMora((currentMora) => currentMora + char)
+    }, [])
 
     // We use the keydown event for control/arrow keys, but not for textual
     // input, because it's hard to suss out when a key is "regular" or not.
@@ -389,9 +409,10 @@ const Crossword = React.forwardRef(
           case "Backspace":
           case "Delete": {
             setCellCharacter(focusedRow, focusedCol, "")
-            if (key === "Backspace") {
+            if (currentMora.length === 0 && key === "Backspace") {
               moveBackward()
             }
+            setCurrentMora("")
             break
           }
 
@@ -436,6 +457,7 @@ const Crossword = React.forwardRef(
       },
       [
         data,
+        currentMora,
         focusedRow,
         focusedCol,
         currentDirection,

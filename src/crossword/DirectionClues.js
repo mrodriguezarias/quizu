@@ -4,11 +4,18 @@ import PropTypes from "prop-types"
 
 import Clue from "./Clue"
 
+const labels = {
+  across: "➡ヨコのカギ",
+  down: "⬇タテのカギ",
+}
+
 export default function DirectionClues({ direction, clues }) {
+  // const label = direction.toUpperCase()
+  const label = labels[direction]
   return (
     <div className="direction">
       {/* use something other than h3? */}
-      <h3 className="header">{direction.toUpperCase()}</h3>
+      <h2 className="header">{label}</h2>
       {clues.map(({ number, clue, correct }) => (
         <Clue
           key={number}

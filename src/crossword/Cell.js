@@ -4,6 +4,9 @@ import { ThemeContext } from "styled-components"
 
 import { CrosswordSizeContext } from "./context"
 
+const letterMap = "ABCD"
+const kotae = "アケオメ"
+
 // expected props: row, col, answer, crossword, cellSize
 
 /**
@@ -17,7 +20,7 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
   const { cellSize, cellPadding, cellInner, cellHalf, fontSize } = useContext(
     CrosswordSizeContext,
   )
-  const {
+  let {
     // gridBackground,
     cellBackground,
     cellBorder,
@@ -37,10 +40,16 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
     [cellData, onClick],
   )
 
-  const { row, col, guess, number } = cellData
+  const { row, col, guess, number, answer } = cellData
 
   const x = col * cellSize
   const y = row * cellSize
+
+  const isKotae = kotae.includes(answer)
+
+  if (isKotae) {
+    cellBackground = "#DE3163"
+  }
 
   return (
     <g
@@ -82,6 +91,17 @@ export default function Cell({ cellData, onClick, focus, highlight }) {
       >
         {guess}
       </text>
+      {isKotae && (
+        <text
+          x={x + cellSize - cellPadding * 4}
+          y={y + cellPadding * 4}
+          textAnchor="end"
+          dominantBaseline="hanging"
+          style={{ fontSize: "50%", fill: numberColor }}
+        >
+          {letterMap[kotae.indexOf(answer)]}
+        </text>
+      )}
     </g>
   )
 }

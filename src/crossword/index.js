@@ -7,6 +7,7 @@ import Cell from "./Cell"
 import Clue from "./Clue"
 import DirectionClues from "./DirectionClues"
 import Crossword from "./Crossword"
+import Kotae from "./Kotae"
 import { CrosswordContext, CrosswordSizeContext } from "./context"
 
 export {
@@ -16,6 +17,7 @@ export {
   CrosswordContext,
   CrosswordSizeContext,
   Crossword,
+  Kotae,
   ThemeProvider,
 }
 

@@ -1,11 +1,11 @@
 const directionInfo = {
-  across: {
-    primary: "col",
-    orthogonal: "row",
-  },
   down: {
     primary: "row",
     orthogonal: "col",
+  },
+  across: {
+    primary: "col",
+    orthogonal: "row",
   },
 }
 

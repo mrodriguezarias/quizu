@@ -5518,6 +5518,11 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
+gem-furigana@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/gem-furigana/-/gem-furigana-1.0.9.tgz#11c2e5577eb022b00a12b7d0609f0138dcb41914"
+  integrity sha512-rtLLeq3AujDcrqoFVyY0Bi5ooRuEi6by6Q6nzrENuqXFU1cTFbogizAbOf1XjmM2XpuSytBNgAHj8STu6pScyQ==
+
 gensync@^1.0.0-beta.1:
   version "1.0.0-beta.1"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.1.tgz#58f4361ff987e5ff6e1e7a210827aa371eaac269"
